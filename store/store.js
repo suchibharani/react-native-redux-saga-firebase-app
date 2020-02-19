@@ -17,7 +17,7 @@ const store = createStore(
   initState,
   applyMiddleware(
     sagaMiddleware,
-    createLogger(),
+    // createLogger(),
   ),
 );
 // Middleware: Redux Saga

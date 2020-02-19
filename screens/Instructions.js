@@ -5,17 +5,17 @@ import {
     View,
     Text,
     Button,
-    ActivityIndicator,
-    TouchableHighlight
+    ActivityIndicator
 } from 'react-native';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 // Import actions
 import * as mapActions from '../actions';
 
-class Home extends Component {
+class Instruction extends Component {
     constructor(props) {
         super(props);
 
@@ -26,7 +26,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.actions.loadQuotes(); //call our action
+        this.props.actions.loadInstructions(); //call our action
     }
 
     render() {
@@ -40,20 +40,11 @@ class Home extends Component {
         } else {
             return (
                 <View style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-                    <Button
-                        title="Go to Counter"
-                        onPress={() => navigation.navigate('Counter')}
-                    />
                     <FlatList
                         ref='listRef'
-                        data={this.props.quotes}
+                        data={this.props.instructions}
                         renderItem={this.renderItem}
-                        keyExtractor={(item, index) => `quotes_${index}` }/>
-                    <TouchableHighlight style={styles.addButton}
-                                        underlayColor='#ff7043'
-                                        onPress={() => navigation.navigate('Newquote', {title:"New Quote"})}>
-                        <Text style={{fontSize: 25, color: 'white'}}>+</Text>
-                    </TouchableHighlight>
+                        keyExtractor={(item, index) => "list-item"+index }/>
                 </View>
             );
         }
@@ -63,10 +54,10 @@ class Home extends Component {
         return (
             <View style={styles.row}>
                 <Text style={styles.title}>
-                    {item.author}
+                    {(parseInt(index) + 1)}{". "}{item.title}
                 </Text>
                 <Text style={styles.description}>
-                    {item.quote}
+                    {item.description}
                 </Text>
             </View>
         )
@@ -77,7 +68,8 @@ class Home extends Component {
 // Map State To Props (Redux Store Passes State To Component)
 const mapStateToProps = (state) => {
     return {
-        quotes: state.quotes
+        loading: state.instructions.loading,
+        instructions: state.instructions.instructions
     }
   };
 // Map Dispatch To Props (Dispatch Actions To Reducers. Reducers Then Modify The Data And Assign It To Your Props)
@@ -89,7 +81,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 //Connect everything
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Instruction);
 
 const styles = StyleSheet.create({
     activityIndicatorContainer:{
@@ -113,25 +105,5 @@ const styles = StyleSheet.create({
     description:{
         marginTop: 5,
         fontSize: 14,
-    },
-    addButton: {
-        backgroundColor: '#ff5722',
-        borderColor: '#ff5722',
-        borderWidth: 1,
-        height: 50,
-        width: 50,
-        borderRadius: 50 / 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        shadowColor: "#000000",
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        shadowOffset: {
-            height: 1,
-            width: 0
-        }
     }
 });

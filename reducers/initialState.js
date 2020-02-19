@@ -1,6 +1,7 @@
 export default {
     instructions : [],
     counter : 0,
-    // loading:true
+    // loading:true,
+    quotes: []
   }
   
