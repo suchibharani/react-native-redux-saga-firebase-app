@@ -10,6 +10,11 @@ export const setQuotes = quotes => ({
   quotes,
 });
 
+export const addQuote = (quote) => ({
+  type: QUOTES.ADD_QUOTE,
+  data: {quote}
+});
+
 export const setQuotesError = error => ({
   type: QUOTES.QUOTES_LOAD_FAIL,
   error,

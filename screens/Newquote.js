@@ -23,36 +23,52 @@ class Newquote extends Component {
         super(props);
 
         this.state = {
+            author : "",
+            quoteText : ""
         };
-
+        this.setAuthor = this.setAuthor.bind(this);
+        this.setText = this.setText.bind(this);
     }
 
     componentDidMount() {
 
     }
-
+    setAuthor(author){
+        this.setState({
+            author : author
+        });
+    }
+    setText(quoteText){
+        this.setState({
+            quoteText : quoteText
+        })
+    }
     render() {
+        
+        let {author, quoteText} = this.state;
+        console.log(this.props);
         return(
-        <KeyboardAvoidingView  style={styles.flex} behavior="padding">
+        <KeyboardAvoidingView keyboardVerticalOffset='87' style={styles.flex} behavior="padding">
             <SafeAreaView style={styles.flex}>
                 <View style={styles.flex}>
                     <TextInput
-                        // onChangeText={(text) => setAuthor(text)}
+                        onChangeText={(text) => this.setAuthor(text)}
                         placeholder={"Author"}
-                        autoFocus={true}
+                        // autoFocus={true}
                         style={[styles.author]}
-                        value=""/>
+                        value={author}/>
                     <TextInput
                         multiline={true}
-                        // onChangeText={(text) => setText(text)}
+                        onChangeText={(text) => this.setText(text)}
                         placeholder={"Enter Quote"}
                         style={[styles.text]}
-                        value=""/>
+                        maxLength={MAX_LENGTH}
+                        value={quoteText}/>
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <View style={{flex: 1, justifyContent: "center"}}>
-                        
+                        <Text style={[styles.count, (MAX_LENGTH - quoteText.length <= 10) && {color: "red"}]}> {MAX_LENGTH - quoteText.length}</Text>
                     </View>
                     <View style={{flex: 1, alignItems: "flex-end"}}>
                         <TouchableHighlight style={[styles.button]} 
